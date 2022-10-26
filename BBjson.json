@@ -1,0 +1,23 @@
+{
+  "from": 1,
+  "to": 10,
+  "total": 500,
+  "currentPage": 1,
+  "totalPages": 50,
+  "queryTime": "0.005",
+  "totalTime": "0.030",
+  "partial": false,
+  "canonicalUrl": "/v1/products(wifiReady=true|wifiBuiltIn=true)?show=sku,name,salePrice&format=json&apiKey=YourAPIKey",
+  "products": [
+    {
+      "sku": 1012749,
+      "name": "Acer - Aspire 11.6 inch Tablet with 120GB Memory",
+      "salePrice": 661.98
+    },
+    {
+      "sku": 4255007,
+      "name": "Acer - B1-720 7\" Android Tablet - 16GB - Iron Gray",
+      "salePrice": 128.98
+    },
+  ]
+}
