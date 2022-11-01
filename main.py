@@ -15,7 +15,7 @@ print(__name__)
 def main():
     """The main function| in future revisions I'll make this more modular"""
     def sku_input():
-        """USER CREDS"""
+        """sku input function"""
         global SKU
     # enter SKU to monitor
         SKU = input("Please enter the SKU you want to monitor \n>")
@@ -27,14 +27,18 @@ def main():
         return SKU
     # Use .replace to 'pop' out unneccesary characters for message func
     def num_input():
+        """phone number input function"""
         global YOUR_NUM
         YOUR_NUM = input("Please enter your phone number ###-###-####.To opt out of text updates,"
         "leave blank. \n>").replace('-', '').replace('(', '').replace(')','')
         while len(YOUR_NUM) != 10 and len(YOUR_NUM) != 0:
             print(f"Please enter phone number in ###-###-#### format. {YOUR_NUM} not accpeted")
             num_input()
+
             
+                 
     def email_input():
+        """email input function"""
         global YOUR_EMAIL
         YOUR_EMAIL = input("Please enter your email (Only accepting '.com' emails) To opt out of email updates, leave blank.\n>").lower()
         while YOUR_EMAIL.endswith(".com") is False and len(YOUR_EMAIL) != 0:
@@ -44,6 +48,7 @@ def main():
             num_input()
             print(f"please enter valid email '{YOUR_EMAIL}' not accepted")
     def get_json():
+        """json GET request"""
         global JSON
         global RESPONSE_API
         RESPONSE_API = requests.get("https://api.bestbuy.com/v1/products/" + SKU + ".json?apiKey=" + api_key)
@@ -56,6 +61,7 @@ def main():
     # # print(json)
     # # ^shows the entire json
     def ping_api():
+        """api loop ping"""
         while not JSON["onlineAvailability"]:
             print("OOS still searching for " , JSON["name"])
             print(f"Will send msg to: \n#: {YOUR_NUM} \nEmail: {YOUR_EMAIL}")
@@ -69,6 +75,7 @@ def main():
         if JSON["onlineAvailability"]:
             print("its in stock")
     def send_email():
+        """send email function"""
         if YOUR_EMAIL == "":
             send_txt()
         receiver = YOUR_EMAIL
@@ -80,6 +87,7 @@ def main():
 )
         print("email sent!")
     def send_txt():
+        """send txt function"""
         if YOUR_NUM == "":
             sys.exit()
         else:
@@ -99,7 +107,7 @@ def main():
     ping_api()
     send_email()
     send_txt()
-    # #test SKU: 5901353 in stock | 6521517 sold out
+    # #test SKU: 5901353 in stock | 6521430 sold out
 if __name__ == "__main__":
     main()
 
