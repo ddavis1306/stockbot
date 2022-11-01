@@ -8,9 +8,6 @@ from twilio.rest import Client
 from config import api_key,sender,gmail_pwd,auth_token,account_sid
 ###GLOBAL VARIABLES###
 yag = yagmail.SMTP(sender, gmail_pwd)
-print(__name__)
-# make SKU and api_key global variables so they can be used in the while loop
-
 ###END OF GLOBAL VARS###
 def main():
     """The main function| in future revisions I'll make this more modular"""
@@ -20,12 +17,10 @@ def main():
     # enter SKU to monitor
         SKU = input("Please enter the SKU you want to monitor \n>")
         while len(SKU) !=7:
-        # return(SKU)
             print(f"{len(SKU)} characters is not proper length of SKU 7 characters expected\n")
             main()
 
         return SKU
-    # Use .replace to 'pop' out unneccesary characters for message func
     def num_input():
         """phone number input function"""
         global YOUR_NUM
