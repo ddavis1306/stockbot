@@ -1,2 +1,9 @@
 #ignore this
 config.py
+
+##CCN /html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[1]/div[2]/div[1]/div/div[2]/div/div[1]/div[1]/input
+##MONTH /html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[1]/div[1]/div[1]/div[2]/select
+##year /html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[1]/div[2]/div[1]/div[2]/select
+#cvv /html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[1]/div[2]/div[1]/div/div[2]/div[2]/div[2]/div[1]/input
+
+###place order /html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[3]/div/div[2]/button/span
