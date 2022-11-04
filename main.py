@@ -6,9 +6,10 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+import undetected_chromedriver.v2 as uc
 import yagmail
 from twilio.rest import Client
-from config import api_key,sender,gmail_pwd,auth_token,account_sid
+from config import api_key,sender,gmail_pwd,auth_token,account_sid,ccn
 yag = yagmail.SMTP(sender, gmail_pwd)
 
 def main():
@@ -73,16 +74,20 @@ def main():
             print("it's in stock")
     def send_email():
         """send email function"""
-        if YOUR_EMAIL == '':
+        try:
+            if YOUR_EMAIL == '':
+                send_txt()
+            else:
+                receiver = YOUR_EMAIL
+                body = "Add to cart!\n" + JSON["addToCartUrl"]
+                yag.send(
+                to=receiver,
+                subject= JSON["name"] + " is in stock",
+                contents=body,
+    )
+        except:
+            print(f"{YOUR_EMAIL} is not a valid email.")
             send_txt()
-        else:
-            receiver = YOUR_EMAIL
-            body = "Add to cart!\n" + JSON["addToCartUrl"]
-            yag.send(
-            to=receiver,
-            subject= JSON["name"] + " is in stock",
-            contents=body,
-)
         print("email sent!")
     def send_txt():
         """send txt function"""
@@ -98,6 +103,7 @@ def main():
             print(f"Txt sent to {YOUR_NUM}.\nGood Luck!")
     def checkout():
         """adds to cart and checksout of webpage"""
+
         options = webdriver.ChromeOptions()
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument("--start-maximized")
@@ -105,7 +111,8 @@ def main():
 
         # Provide the path of chromedriver.
         #bypass BBY bot detection
-        driver = webdriver.Chrome(executable_path="chromedriver", options = options)
+        driver = uc.Chrome()
+        # driver = webdriver.Chrome(executable_path="chromedriver", options = options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -151,15 +158,27 @@ def main():
         contact_email = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[1]/section/div[2]/section/section/div[1]/label/div/input')
         contact_email.send_keys(YOUR_EMAIL)
         driver.implicitly_wait(5)
-        contact_num = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/section/div[2]/section/section/div[2]/label/div/input')
+        contact_num = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[1]/section/div[2]/section/section/div[2]/label/div/input')
         contact_num.send_keys(YOUR_NUM)
         driver.implicitly_wait(5)
-        # cont_payment = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/section/div[2]/section/div/div/button/span')
-        # cont_payment.click()
+        cont_payment = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[1]/section/div[2]/section/div/div/button')
+        time.sleep(2)
+        cont_payment.click()
+        time.sleep(4)
+        ccn_input = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[1]/div[2]/div[1]/div/div[2]/div/div[1]/div[1]/input')
+        ccn_input.send_keys(ccn)
+        driver.implicitly_wait(10)
+        add_card = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[1]/div[2]/div[1]/div/div[2]/div[2]/button')
+        add_card.click()
+        add_card.click()
+        driver.implicitly_wait(10)
+        submit_order = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div[1]/div[1]/main/div[3]/div[2]/div/section/div[3]/div/div[2]/button/span')
+        time.sleep(4)
+        submit_order.click()
         time.sleep(600)
         # driver.quit()
         print("Done")
-
+    
     sku_input()
     num_input()
     email_input()
@@ -168,6 +187,6 @@ def main():
     send_email()
     send_txt()
     checkout()
-    # #test SKU: 5901353 in stock | 6521430 sold out
+    # #test SKU: 6458225 in stock | 6521430 sold out
 if __name__ == "__main__":
     main()
